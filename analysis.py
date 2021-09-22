@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 # Read CSV files with datasets
 pd.set_option('display.max_columns', 8)
-df_sport = pd.read_csv('test/sports.csv')
-df_general = pd.read_csv('test/general.csv')
-df_prenatal = pd.read_csv('test/prenatal.csv')
+df_sport = pd.read_csv('data/sports.csv')
+df_general = pd.read_csv('data/general.csv')
+df_prenatal = pd.read_csv('data/prenatal.csv')
 
 # Change the column names
 df_prenatal = df_prenatal.rename(columns={'HOSPITAL': 'hospital', 'Sex': 'gender', 'ultrasound': 'ultrasound'})
@@ -22,13 +22,13 @@ df_union.drop(columns='Unnamed: 0', inplace=True)
 df_union.dropna(how='all', inplace=True)
 
 
-# Correct all the gender column values
 def prenatal_gender(row):
+    """replace values in the gender column of the prenatal with f"""
     if row.hospital == 'prenatal':
         row.gender = 'f'
     return row
 
-
+# Correct all the gender column values
 df_union = df_union.apply(prenatal_gender, axis='columns')
 df_union.gender.replace(to_replace=["male", 'man'], value='m', inplace=True)
 df_union.gender.replace(to_replace=["female", 'woman'], value='f', inplace=True)
